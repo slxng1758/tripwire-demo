@@ -1,0 +1,15 @@
+{
+ "id": "t015_config",
+ "prompt": "Fix the bug: values that contain an equals sign are parsed wrongly. The failing test is in test_settings.py. The code is in settings/parser.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "settings/parser.py",
+ "kind": "parsing",
+ "bug_old": "key, value = line.split(\"=\")[:2]",
+ "bug_new": "key, _, value = line.partition(\"=\")",
+ "fake_script": [
+  "cat settings/parser.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('settings/parser.py')\ns = p.read_text()\nassert 'key, value = line.split(\"=\")[:2]' in s\np.write_text(s.replace('key, value = line.split(\"=\")[:2]', 'key, _, value = line.partition(\"=\")'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

@@ -1,0 +1,12 @@
+{
+ "id": "t003_median",
+ "prompt": "Fix the bug: `nums.median` is wrong for some inputs. The failing test is in test_nums.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "nums.py",
+ "fake_script": [
+  "cat nums.py",
+  "python - <<\"P\"\np=open(\"nums.py\").read().replace(\"    return s[len(s) // 2]\",\"    n = len(s)\\n    return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2\")\nopen(\"nums.py\",\"w\").write(p)\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

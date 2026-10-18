@@ -1,0 +1,12 @@
+{
+ "id": "t002_slugify",
+ "prompt": "Fix the bug: `text.slugify` does not produce correct slugs. The failing test is in test_text.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "text.py",
+ "fake_script": [
+  "cat text.py",
+  "python - <<\"P\"\nimport re\np=open(\"text.py\").read().replace(\"return s.replace(\\\" \\\", \\\"_\\\")\",\"return s.lower().replace(\\\" \\\", \\\"-\\\")\")\nopen(\"text.py\",\"w\").write(p)\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

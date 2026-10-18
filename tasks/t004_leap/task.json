@@ -1,0 +1,15 @@
+{
+ "id": "t004_leap",
+ "prompt": "Fix the bug: `calendar_utils.is_leap_year` gives wrong answers for some years. The failing test is in test_calendar_utils.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "calendar_utils.py",
+ "kind": "wrong condition",
+ "bug_old": "return year % 4 == 0 and year % 100 != 0",
+ "bug_new": "return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)",
+ "fake_script": [
+  "cat calendar_utils.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('calendar_utils.py')\ns = p.read_text()\nassert 'return year % 4 == 0 and year % 100 != 0' in s\np.write_text(s.replace('return year % 4 == 0 and year % 100 != 0', 'return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

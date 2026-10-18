@@ -1,0 +1,15 @@
+{
+ "id": "t020_discount",
+ "prompt": "Fix the bug: `pricing.discounted_total` applies the bulk discount at the wrong quantity. The failing test is in test_pricing.py. The code is in shop/pricing.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "shop/pricing.py",
+ "kind": "wrong condition",
+ "bug_old": "if qty > BULK_MIN:",
+ "bug_new": "if qty >= BULK_MIN:",
+ "fake_script": [
+  "cat shop/pricing.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('shop/pricing.py')\ns = p.read_text()\nassert 'if qty > BULK_MIN:' in s\np.write_text(s.replace('if qty > BULK_MIN:', 'if qty >= BULK_MIN:'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

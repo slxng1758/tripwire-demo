@@ -1,0 +1,15 @@
+{
+ "id": "t010_merge",
+ "prompt": "Fix the bug: `counters.merge_counts` loses counts. The failing test is in test_counters.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "counters.py",
+ "kind": "logic",
+ "bug_old": "        out[k] = v\n    return out",
+ "bug_new": "        out[k] = out.get(k, 0) + v\n    return out",
+ "fake_script": [
+  "cat counters.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('counters.py')\ns = p.read_text()\nassert '        out[k] = v\\n    return out' in s\np.write_text(s.replace('        out[k] = v\\n    return out', '        out[k] = out.get(k, 0) + v\\n    return out'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

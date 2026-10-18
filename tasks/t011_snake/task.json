@@ -1,0 +1,15 @@
+{
+ "id": "t011_snake",
+ "prompt": "Fix the bug: `naming.camel_to_snake` produces names with a stray leading underscore. The failing test is in test_naming.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "naming.py",
+ "kind": "string handling",
+ "bug_old": "            out.append(\"_\" + ch.lower())",
+ "bug_new": "            out.append((\"_\" if out else \"\") + ch.lower())",
+ "fake_script": [
+  "cat naming.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('naming.py')\ns = p.read_text()\nassert '            out.append(\"_\" + ch.lower())' in s\np.write_text(s.replace('            out.append(\"_\" + ch.lower())', '            out.append((\"_\" if out else \"\") + ch.lower())'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

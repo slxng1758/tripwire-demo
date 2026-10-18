@@ -1,0 +1,15 @@
+{
+ "id": "t016_duration",
+ "prompt": "Fix the bug: `durations.parse_duration` returns wrong totals for strings with minutes. The failing test is in test_durations.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "durations.py",
+ "kind": "data constant",
+ "bug_old": "\"m\": 6,",
+ "bug_new": "\"m\": 60,",
+ "fake_script": [
+  "cat durations.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('durations.py')\ns = p.read_text()\nassert '\"m\": 6,' in s\np.write_text(s.replace('\"m\": 6,', '\"m\": 60,'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

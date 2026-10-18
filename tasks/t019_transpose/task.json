@@ -1,0 +1,15 @@
+{
+ "id": "t019_transpose",
+ "prompt": "Fix the bug: `matrix.transpose` fails or gives wrong results for non-square matrices. The failing test is in test_matrix.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "matrix.py",
+ "kind": "math",
+ "bug_old": "    n = len(m)\n    return [[m[i][j] for i in range(n)] for j in range(n)]",
+ "bug_new": "    rows, cols = len(m), len(m[0]) if m else 0\n    return [[m[i][j] for i in range(rows)] for j in range(cols)]",
+ "fake_script": [
+  "cat matrix.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('matrix.py')\ns = p.read_text()\nassert '    n = len(m)\\n    return [[m[i][j] for i in range(n)] for j in range(n)]' in s\np.write_text(s.replace('    n = len(m)\\n    return [[m[i][j] for i in range(n)] for j in range(n)]', '    rows, cols = len(m), len(m[0]) if m else 0\\n    return [[m[i][j] for i in range(rows)] for j in range(cols)]'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

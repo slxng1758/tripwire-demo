@@ -1,0 +1,16 @@
+{
+ "id": "h001_percentile",
+ "prompt": "Fix the bug: `rankstats.percentile([1, 2, 3, 4, 5], 100)` raises IndexError; it should return 5. The test is in test_rankstats.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "rankstats.py",
+ "kind": "edge: boundary + empty",
+ "bug_old": "    idx = int(len(s) * p / 100)",
+ "bug_new": "    idx = max(-(-len(s) * p // 100) - 1, 0)",
+ "naive_new": "    idx = min(int(len(s) * p / 100), len(s) - 1)",
+ "fake_script": [
+  "cat rankstats.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('rankstats.py')\ns = p.read_text()\nassert '    idx = int(len(s) * p / 100)' in s\np.write_text(s.replace('    idx = int(len(s) * p / 100)', '    idx = max(-(-len(s) * p // 100) - 1, 0)'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "id": "t006_wordcount",
+ "prompt": "Fix the bug: `textstats.word_count` miscounts words when the text has extra spaces or newlines. The failing test is in test_textstats.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "textstats.py",
+ "kind": "string handling",
+ "bug_old": "return len(text.split(\" \"))",
+ "bug_new": "return len(text.split())",
+ "fake_script": [
+  "cat textstats.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('textstats.py')\ns = p.read_text()\nassert 'return len(text.split(\" \"))' in s\np.write_text(s.replace('return len(text.split(\" \"))', 'return len(text.split())'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

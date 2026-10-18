@@ -1,0 +1,15 @@
+{
+ "id": "t017_dedupe",
+ "prompt": "Fix the bug: `collections_util.unique` changes the order of the items. The failing test is in test_collections_util.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "collections_util.py",
+ "kind": "ordering",
+ "bug_old": "return list(set(items))",
+ "bug_new": "return list(dict.fromkeys(items))",
+ "fake_script": [
+  "cat collections_util.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('collections_util.py')\ns = p.read_text()\nassert 'return list(set(items))' in s\np.write_text(s.replace('return list(set(items))', 'return list(dict.fromkeys(items))'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

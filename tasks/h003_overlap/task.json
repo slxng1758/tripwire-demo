@@ -1,0 +1,16 @@
+{
+ "id": "h003_overlap",
+ "prompt": "Fix the bug: `timeslots.overlaps((1, 5), (4, 8))` returns False but those two slots clearly overlap. The test is in test_timeslots.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "timeslots.py",
+ "kind": "edge: containment + touching",
+ "bug_old": "    return a[0] < b[0] < a[1]",
+ "bug_new": "    return a[0] < b[1] and b[0] < a[1]",
+ "naive_new": "    return a[0] < b[0] < a[1] or b[0] < a[0] < b[1]",
+ "fake_script": [
+  "cat timeslots.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('timeslots.py')\ns = p.read_text()\nassert '    return a[0] < b[0] < a[1]' in s\np.write_text(s.replace('    return a[0] < b[0] < a[1]', '    return a[0] < b[1] and b[0] < a[1]'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

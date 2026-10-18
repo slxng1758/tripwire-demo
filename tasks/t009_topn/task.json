@@ -1,0 +1,15 @@
+{
+ "id": "t009_topn",
+ "prompt": "Fix the bug: `leaderboard.top_n` does not return the highest scores. The failing test is in test_leaderboard.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "leaderboard.py",
+ "kind": "wrong ordering",
+ "bug_old": "return sorted(scores, key=lambda s: s[1])[:n]",
+ "bug_new": "return sorted(scores, key=lambda s: s[1], reverse=True)[:n]",
+ "fake_script": [
+  "cat leaderboard.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('leaderboard.py')\ns = p.read_text()\nassert 'return sorted(scores, key=lambda s: s[1])[:n]' in s\np.write_text(s.replace('return sorted(scores, key=lambda s: s[1])[:n]', 'return sorted(scores, key=lambda s: s[1], reverse=True)[:n]'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

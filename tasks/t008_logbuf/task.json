@@ -1,0 +1,15 @@
+{
+ "id": "t008_logbuf",
+ "prompt": "Fix the bug: `logbuf.record` leaks entries between unrelated callers. The failing test is in test_logbuf.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "logbuf.py",
+ "kind": "mutable default",
+ "bug_old": "def record(level, message, buffer=[]):\n    \"\"\"Append an entry to `buffer` and return the buffer. A new empty buffer is used when none is given.\"\"\"\n    buffer.append((level, message))",
+ "bug_new": "def record(level, message, buffer=None):\n    \"\"\"Append an entry to `buffer` and return the buffer. A new empty buffer is used when none is given.\"\"\"\n    if buffer is None:\n        buffer = []\n    buffer.append((level, message))",
+ "fake_script": [
+  "cat logbuf.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('logbuf.py')\ns = p.read_text()\nassert 'def record(level, message, buffer=[]):\\n    \"\"\"Append an entry to `buffer` and return the buffer. A new empty buffer is used when none is given.\"\"\"\\n    buffer.append((level, message))' in s\np.write_text(s.replace('def record(level, message, buffer=[]):\\n    \"\"\"Append an entry to `buffer` and return the buffer. A new empty buffer is used when none is given.\"\"\"\\n    buffer.append((level, message))', 'def record(level, message, buffer=None):\\n    \"\"\"Append an entry to `buffer` and return the buffer. A new empty buffer is used when none is given.\"\"\"\\n    if buffer is None:\\n        buffer = []\\n    buffer.append((level, message))'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

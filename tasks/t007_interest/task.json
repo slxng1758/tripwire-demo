@@ -1,0 +1,15 @@
+{
+ "id": "t007_interest",
+ "prompt": "Fix the bug: `finance.compound_balance` returns the wrong balance. The failing test is in test_finance.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "finance.py",
+ "kind": "math",
+ "bug_old": "return principal * (1 + rate * years)",
+ "bug_new": "return principal * (1 + rate) ** years",
+ "fake_script": [
+  "cat finance.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('finance.py')\ns = p.read_text()\nassert 'return principal * (1 + rate * years)' in s\np.write_text(s.replace('return principal * (1 + rate * years)', 'return principal * (1 + rate) ** years'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "id": "t005_paginate",
+ "prompt": "Fix the bug: `listing.paginate` returns the wrong slice of items. The failing test is in test_listing.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "listing.py",
+ "kind": "off-by-one",
+ "bug_old": "start = page * size",
+ "bug_new": "start = (page - 1) * size",
+ "fake_script": [
+  "cat listing.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('listing.py')\ns = p.read_text()\nassert 'start = page * size' in s\np.write_text(s.replace('start = page * size', 'start = (page - 1) * size'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

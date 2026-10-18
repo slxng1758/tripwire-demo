@@ -1,0 +1,12 @@
+{
+ "id": "t001_total",
+ "prompt": "Fix the bug: `stats.total_with_tax` returns wrong totals. The failing test is in test_stats.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "stats.py",
+ "fake_script": [
+  "cat stats.py",
+  "sed -i.bak \"s/sum(prices\\[:-1\\])/sum(prices)/\" stats.py",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

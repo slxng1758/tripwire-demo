@@ -1,0 +1,15 @@
+{
+ "id": "t014_palindrome",
+ "prompt": "Fix the bug: `wordplay.is_palindrome` rejects phrases that should count. The failing test is in test_wordplay.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "wordplay.py",
+ "kind": "wrong condition",
+ "bug_old": "    s = s.lower()\n    return s == s[::-1]",
+ "bug_new": "    s = [c for c in s.lower() if c.isalnum()]\n    return s == s[::-1]",
+ "fake_script": [
+  "cat wordplay.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('wordplay.py')\ns = p.read_text()\nassert '    s = s.lower()\\n    return s == s[::-1]' in s\np.write_text(s.replace('    s = s.lower()\\n    return s == s[::-1]', '    s = [c for c in s.lower() if c.isalnum()]\\n    return s == s[::-1]'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

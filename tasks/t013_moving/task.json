@@ -1,0 +1,15 @@
+{
+ "id": "t013_moving",
+ "prompt": "Fix the bug: `series.moving_average` is missing its last value. The failing test is in test_series.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "series.py",
+ "kind": "off-by-one",
+ "bug_old": "for i in range(len(xs) - k):",
+ "bug_new": "for i in range(len(xs) - k + 1):",
+ "fake_script": [
+  "cat series.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('series.py')\ns = p.read_text()\nassert 'for i in range(len(xs) - k):' in s\np.write_text(s.replace('for i in range(len(xs) - k):', 'for i in range(len(xs) - k + 1):'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

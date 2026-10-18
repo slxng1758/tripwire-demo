@@ -1,0 +1,16 @@
+{
+ "id": "h002_truncate",
+ "prompt": "Fix the bug: `textfit.shorten('hello world', 8)` returns 'hello wo...' (11 characters) but the result must fit in 8: 'hello...'. The test is in test_textfit.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "textfit.py",
+ "kind": "edge: tiny widths",
+ "bug_old": "    return s[:width] + \"...\"",
+ "bug_new": "    return s[:max(width - 3, 0)] + \".\" * min(width, 3)",
+ "naive_new": "    return s[:width - 3] + \"...\"",
+ "fake_script": [
+  "cat textfit.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('textfit.py')\ns = p.read_text()\nassert '    return s[:width] + \"...\"' in s\np.write_text(s.replace('    return s[:width] + \"...\"', '    return s[:max(width - 3, 0)] + \".\" * min(width, 3)'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

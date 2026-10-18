@@ -1,0 +1,16 @@
+{
+ "id": "h005_version",
+ "prompt": "Fix the bug: `versions.compare('1.10', '1.9')` returns -1 but 1.10 is the newer version, so it should return 1. The test is in test_versions.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "versions.py",
+ "kind": "edge: trailing zeros",
+ "bug_old": "    return (a > b) - (a < b)",
+ "bug_new": "    pa, pb = parse(a), parse(b)\n    while pa and pa[-1] == 0:\n        pa.pop()\n    while pb and pb[-1] == 0:\n        pb.pop()\n    return (pa > pb) - (pa < pb)",
+ "naive_new": "    pa, pb = parse(a), parse(b)\n    return (pa > pb) - (pa < pb)",
+ "fake_script": [
+  "cat versions.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('versions.py')\ns = p.read_text()\nassert '    return (a > b) - (a < b)' in s\np.write_text(s.replace('    return (a > b) - (a < b)', '    pa, pb = parse(a), parse(b)\\n    while pa and pa[-1] == 0:\\n        pa.pop()\\n    while pb and pb[-1] == 0:\\n        pb.pop()\\n    return (pa > pb) - (pa < pb)'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "id": "h004_split",
+ "prompt": "Fix the bug: `billing.split_evenly(100, 3)` returns [33, 33, 33], so one cent disappears. The parts must add up to the total. The test is in test_billing.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "billing.py",
+ "kind": "edge: remainders",
+ "bug_old": "    return [total // n] * n",
+ "bug_new": "    return [total // n + (i < total % n) for i in range(n)]",
+ "naive_new": "    return [total // n] * (n - 1) + [total - total // n * (n - 1)]",
+ "fake_script": [
+  "cat billing.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('billing.py')\ns = p.read_text()\nassert '    return [total // n] * n' in s\np.write_text(s.replace('    return [total // n] * n', '    return [total // n + (i < total % n) for i in range(n)]'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

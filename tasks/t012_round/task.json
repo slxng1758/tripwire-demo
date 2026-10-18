@@ -1,0 +1,15 @@
+{
+ "id": "t012_round",
+ "prompt": "Fix the bug: `rounding.round_half_up` rounds some halves down. The failing test is in test_rounding.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "rounding.py",
+ "kind": "math",
+ "bug_old": "    return round(x)",
+ "bug_new": "    return math.floor(x + 0.5)",
+ "fake_script": [
+  "cat rounding.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('rounding.py')\ns = p.read_text()\nassert '    return round(x)' in s\np.write_text(s.replace('    return round(x)', '    return math.floor(x + 0.5)'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}

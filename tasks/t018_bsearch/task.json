@@ -1,0 +1,15 @@
+{
+ "id": "t018_bsearch",
+ "prompt": "Fix the bug: `searching.binary_search` cannot find some values that are in the list. The failing test is in test_searching.py.",
+ "test_cmd": "python -m pytest -q",
+ "source_file": "searching.py",
+ "kind": "off-by-one",
+ "bug_old": "while lo < hi:\n        mid = (lo + hi) // 2\n        if items[mid] == target:",
+ "bug_new": "while lo <= hi:\n        mid = (lo + hi) // 2\n        if items[mid] == target:",
+ "fake_script": [
+  "cat searching.py",
+  "python - <<'P'\nfrom pathlib import Path\np = Path('searching.py')\ns = p.read_text()\nassert 'while lo < hi:\\n        mid = (lo + hi) // 2\\n        if items[mid] == target:' in s\np.write_text(s.replace('while lo < hi:\\n        mid = (lo + hi) // 2\\n        if items[mid] == target:', 'while lo <= hi:\\n        mid = (lo + hi) // 2\\n        if items[mid] == target:'))\nP",
+  "python -m pytest -q",
+  "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+ ]
+}
